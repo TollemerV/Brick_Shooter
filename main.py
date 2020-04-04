@@ -22,16 +22,22 @@ can.create_image(320,240,image=fond)
 #bloc_joueur
 bloc_tk= can.create_image(320, 430, image=bloc)
 
-
+limit = 0
 #fontion pour aller à gauche
 def left(event):
-    print('hey')
-    can.move(bloc_tk,-20,0)
+    global limit 
+    if limit > -280 :
+     limit = limit - 20
+     print('hey')
+     can.move(bloc_tk,-20,0)
 
 #fontion pour aller à droite 
 def right(event):
-    print('hey')
-    can.move(bloc_tk,20,0)
+    global limit 
+    if limit < 280 :
+        limit = limit + 20
+        print('hey')
+        can.move(bloc_tk,20,0)
 
 
 #Touche fleche gauche pour aller à gauche
