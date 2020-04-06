@@ -4,6 +4,7 @@ import time
 import pickle
 from function import *
 
+
 #######################
 #                     #
 # Programme principal #
@@ -18,18 +19,23 @@ fenetre=Tk()
 
 fenetre.title('Space invaders')
 
-InitVarEnv()
+(debutJeu, score) = InitVarEnv()
 
 # D�finition du canevas ( Ecran de jeu )
 
 gameC=Canvas(fenetre,width=640,height=480,bg='black')
 
 # On affiche l'écran de présentation du jeu
-afficherGlobal()
+AffichageScore=Label(fenetre,font=('Fixedsys',16))
 
-EcranDePresentation(score, gameC, fenetre, debutJeu)
+AffichageScore.grid(row=0,column=0,sticky=W)
+
+
+debutJeu = EcranDePresentation(AffichageScore, gameC, fenetre, debutJeu)
 
 # On met le gestionnaire d'évènements en route
+
+afficherGlobal(debutJeu, score)
 
 fenetre.mainloop()
 
