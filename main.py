@@ -22,7 +22,7 @@ bloc_tk = can.create_image(320, 430, image=bloc)
 
 
 ########################################################################
-##################### VARIABLE #################################
+##################### VARIABLE #########################################
 ########################################################################
 
 #limite cotés de la carte
@@ -68,7 +68,6 @@ def left(event):
     global limit 
     if limit > -280 :
      limit = limit - vitesse_deplacement
-     print('hey')
      can.move(bloc_tk,-vitesse_deplacement,0)
 
 #fontion pour aller à droite 
@@ -76,13 +75,11 @@ def right(event):
     global limit
     if limit < 280 :
         limit = limit + vitesse_deplacement
-        print('hey')
         can.move(bloc_tk,vitesse_deplacement,0)
 
 #Touche fleche gauche pour aller à gauche
 fenetre.bind('<Left>', left)
 #Touche fleche droit pour aller à droit
 fenetre.bind('<Right>',right)
-
 
 fenetre.mainloop()
