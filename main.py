@@ -14,11 +14,40 @@ can.pack()
 # fond d'ecran
 fond = PhotoImage(file='fond.gif')
 #bloc_joueur
-bloc = PhotoImage(file="fusee.png")
+bloc_joueur = PhotoImage(file="fusee.png")
+#bloc ennemi 
+bloc_ennemi = PhotoImage(file="ennemi.png")
+
+xennemi = 60
+yennemi = 40
+i=0
+j=0
+
+
+
+
 # fond d'ecran
 can.create_image(320,240,image=fond)
 #bloc_joueur
-bloc_tk = can.create_image(320, 430, image=bloc)
+bloc_tk = can.create_image(320,430, image=bloc_joueur)
+
+def ennemi():
+    global xennemi,yennemi
+    listebloc=[]
+    listebloc.append(can.create_image(xennemi,yennemi,image=bloc_ennemi))
+    xennemi = xennemi + 60
+    print ("test")  
+
+
+    
+while j<3:
+    while i<10 :
+      ennemi()
+      i=i+1
+    j=j+1
+    yennemi = yennemi + 60
+    xennemi = 60
+    i=0
 
 
 ########################################################################
