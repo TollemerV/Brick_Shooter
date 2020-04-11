@@ -28,7 +28,7 @@ yennemi = 40
 i=0
 j=0
 k=0
-
+nombre_tir=0
 
 
 #definition d'un bloc ennemi
@@ -56,6 +56,11 @@ def ajouter_uneligne():
 
 ajouter_uneligne()
 ajouter_uneligne()
+
+if nombre_tir==18 :
+    ajouter_uneligne()
+    nombre_tir = 0
+
 
 '''
 #Fonction de destruction d'un bloc
