@@ -18,37 +18,53 @@ bloc_joueur = PhotoImage(file="fusee.png")
 #bloc ennemi 
 bloc_ennemi = PhotoImage(file="ennemi.png")
 
-xennemi = 60
-yennemi = 40
-i=0
-j=0
-
-
-
-
 # fond d'ecran
 can.create_image(320,240,image=fond)
 #bloc_joueur
 bloc_tk = can.create_image(320,430, image=bloc_joueur)
 
+xennemi = 60
+yennemi = 40
+i=0
+j=0
+k=0
+
+
+
+#definition d'un bloc ennemi
 def ennemi():
-    global xennemi,yennemi
-    listebloc=[]
+    global xennemi,yennemi,listexennemi,listeyennemi,k
+    listebloc=[k]
+    listexennemi=[k]
+    listeyennemi=[k]
     listebloc.append(can.create_image(xennemi,yennemi,image=bloc_ennemi))
+    #On décale de 60px bloc entre chaque blo! 
     xennemi = xennemi + 60
     print ("test")  
+    k = k+1
 
-
-    
-while j<3:
+# Ajouter une nouvelle ligne | On décale de 60 pixels vers la droite entre chaque bloc | On remet X à 60 quand on arrive au bout de la ligne ainsi que le compteur i
+def ajouter_uneligne():
+    global i,yennemi,xennemi
     while i<10 :
-      ennemi()
-      i=i+1
-    j=j+1
+        ennemi()
+        i=i+1
     yennemi = yennemi + 60
     xennemi = 60
     i=0
 
+
+ajouter_uneligne()
+ajouter_uneligne()
+
+'''
+#Fonction de destruction d'un bloc
+def destruction_bloc:
+    while (l<len(xennemi)):
+        if xtir[l]=listeexennemi[l] and ytir[l]=listeyennemi[l] :
+            can.delete(tir[l])
+            can.delete(listebloc[l])
+'''
 
 ########################################################################
 ##################### VARIABLE #########################################
