@@ -29,6 +29,10 @@ i=0
 j=0
 k=0
 nombre_tir=0
+xtir =0
+ytir=0
+l=0
+tir=0
 
 
 #definition d'un bloc ennemi
@@ -62,14 +66,18 @@ if nombre_tir==18 :
     nombre_tir = 0
 
 
-'''
+
 #Fonction de destruction d'un bloc
-def destruction_bloc:
-    while (l<len(xennemi)):
-        if xtir[l]=listeexennemi[l] and ytir[l]=listeyennemi[l] :
-            can.delete(tir[l])
+def destruction_bloc ():
+    global listexennemi,listeyennemi,l,xtir,ytir,listebloc
+    
+    while (l<len(listexennemi))and (l<len(listeyennemi)):
+        if (xtir==listexennemi[l]) and (ytir==listeyennemi[l]) :
+            listebloc = []
+            can.delete(tir)
             can.delete(listebloc[l])
-'''
+        l = l+1
+     
 
 ########################################################################
 ##################### VARIABLE #########################################
