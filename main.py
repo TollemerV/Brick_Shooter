@@ -26,12 +26,12 @@ fenetre.title('Space invaders')
 gameC=Canvas(fenetre,width=640,height=480,bg='black')
 
 # On affiche l'écran de présentation du jeu
-AffichageScore=Label(fenetre,font=('Fixedsys',16))
+affichageScore=Label(fenetre,font=('Fixedsys',16))
 
-AffichageScore.grid(row=0,column=0,sticky=W)
+affichageScore.grid(row=0,column=0,sticky=W)
 
 
-debutJeu = EcranDePresentation(AffichageScore, gameC, fenetre, debutJeu)
+debutJeu = EcranDePresentation(affichageScore, gameC, fenetre, debutJeu)
 
 # On met le gestionnaire d'évènements en route
 
