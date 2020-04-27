@@ -17,11 +17,15 @@ fond = PhotoImage(file='fond.gif')
 bloc_joueur = PhotoImage(file="fusee.png")
 #bloc ennemi 
 bloc_ennemi = PhotoImage(file="ennemi.png")
+#Projectile (tir) 
+img_projectile = PhotoImage(file="projectile.png")
 
 # fond d'ecran
 can.create_image(320,240,image=fond)
 #bloc_joueur
 bloc_tk = can.create_image(320,430, image=bloc_joueur)
+
+#projectile = can.create_image(320,350, image=img_projectile)
 
 xennemi = 60
 yennemi = 40
@@ -32,7 +36,8 @@ nombre_tir=0
 xtir =0
 ytir=0
 l=0
-tir=0
+projo=0
+lateral_tir = 320
 
 
 #definition d'un bloc ennemi
@@ -74,7 +79,7 @@ def destruction_bloc ():
     while (l<len(listexennemi))and (l<len(listeyennemi)):
         if (xtir==listexennemi[l]) and (ytir==listeyennemi[l]) :
             listebloc = []
-            can.delete(tir)
+            can.delete(projo)
             can.delete(listebloc[l])
         l = l+1
      
@@ -123,21 +128,37 @@ def boutique_vitesse_tir(vitesse_tir):
 
 #fontion pour aller à gauche
 def left(event):
-    global limit 
+    global limit,lateral_tir
     if limit > -280 :
      limit = limit - vitesse_deplacement
      can.move(bloc_tk,-vitesse_deplacement,0)
+     lateral_tir = lateral_tir - vitesse_deplacement
+
 
 #fontion pour aller à droite 
 def right(event):
-    global limit
+    global limit,lateral_tir
     if limit < 280 :
         limit = limit + vitesse_deplacement
         can.move(bloc_tk,vitesse_deplacement,0)
+        lateral_tir = lateral_tir + vitesse_deplacement
+
+def tir(event):
+    global projectile,lateral_tir
+    #if tir_unique == 1 :
+    projectile = can.create_image(lateral_tir,350, image=img_projectile)
+    #while compteur < 20 :
+    #compteur = compteur + 1
+            
+
+
+
 
 #Touche fleche gauche pour aller à gauche
 fenetre.bind('<Left>', left)
 #Touche fleche droit pour aller à droit
 fenetre.bind('<Right>',right)
+
+fenetre.bind('<space>',tir)
 
 fenetre.mainloop()
