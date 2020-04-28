@@ -36,9 +36,8 @@ nombre_tir=0
 xtir =0
 ytir=0
 l=0
-projo=0
-lateral_tir = 320
-
+horizon_tir = 320
+projectile = []
 
 #definition d'un bloc ennemi
 def ennemi():
@@ -49,7 +48,6 @@ def ennemi():
     listebloc.append(can.create_image(xennemi,yennemi,image=bloc_ennemi))
     #On décale de 60px bloc entre chaque blo! 
     xennemi = xennemi + 60
-    print ("test")  
     k = k+1
 
 # Ajouter une nouvelle ligne | On décale de 60 pixels vers la droite entre chaque bloc | On remet X à 60 quand on arrive au bout de la ligne ainsi que le compteur i
@@ -79,7 +77,7 @@ def destruction_bloc ():
     while (l<len(listexennemi))and (l<len(listeyennemi)):
         if (xtir==listexennemi[l]) and (ytir==listeyennemi[l]) :
             listebloc = []
-            can.delete(projo)
+            can.delete(projectile)
             can.delete(listebloc[l])
         l = l+1
      
@@ -128,37 +126,60 @@ def boutique_vitesse_tir(vitesse_tir):
 
 #fontion pour aller à gauche
 def left(event):
-    global limit,lateral_tir
+    global limit,horizon_tir
     if limit > -280 :
      limit = limit - vitesse_deplacement
      can.move(bloc_tk,-vitesse_deplacement,0)
-     lateral_tir = lateral_tir - vitesse_deplacement
+     horizon_tir = horizon_tir - vitesse_deplacement
 
 
 #fontion pour aller à droite 
 def right(event):
-    global limit,lateral_tir
+    global limit,horizon_tir
     if limit < 280 :
         limit = limit + vitesse_deplacement
         can.move(bloc_tk,vitesse_deplacement,0)
-        lateral_tir = lateral_tir + vitesse_deplacement
+        horizon_tir = horizon_tir + vitesse_deplacement
 
-def tir(event):
-    global projectile,lateral_tir
-    #if tir_unique == 1 :
-    projectile = can.create_image(lateral_tir,350, image=img_projectile)
-    #while compteur < 20 :
-    #compteur = compteur + 1
-            
+tir_unique = 1
+lateral_tir = 350
+compteur = 0
+
+dx = 0
+dy = -10
+# NE PAS OUBLIER TIR_UNIQUE
+projectile =[can.create_image(horizon_tir,lateral_tir, image=img_projectile)]
+def tir():
+    global tir_unique,lateral_tir,horizon_tir,projectile
+    can.move(projectile,dx,dy)
+    fenetre.after(20,tir)
 
 
 
+   
+'''
+def déplacement_projo():
+    global projectile,horizon_tir,lateral_tir,compteur,tir_unique
+    if len(projectile)==1:
+            #projectile = can.create_image(horizon_tir,lateral_tir, image=img_projectile)
+            compteur = compteur + 1
+            lateral_tir = lateral_tir - 20
+            can.delete(projectile[0])
+            can.move(projectile,0,-20)
+            projectile =[can.create_image(horizon_tir,lateral_tir, image=img_projectile)]
+            fenetre.after(20,déplacement_projo)
+    compteur = 0
+    lateral_tir = 350
+'''
 
+tir()
 #Touche fleche gauche pour aller à gauche
 fenetre.bind('<Left>', left)
 #Touche fleche droit pour aller à droit
 fenetre.bind('<Right>',right)
 
 fenetre.bind('<space>',tir)
+
+
 
 fenetre.mainloop()
