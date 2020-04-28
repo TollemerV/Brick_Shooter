@@ -141,14 +141,24 @@ def right(event):
         can.move(bloc_tk,vitesse_deplacement,0)
         horizon_tir = horizon_tir + vitesse_deplacement
 
+#tir unique permet de tirer un projectile
 tir_unique = 1
-lateral_tir = 350
+# placement verticale du départ des projectiles
+lateral_tir = 380
 
+#projectile déplacement horizontal (ne pas toucher)
 dx = 0
+# dy : vitesse du projectile , plus il tend vers moins l'infinie plus il est rapide
 dy = -10
+#compteur du nombre d'animation tir
 compteur_tir = 0
+# compte le nombre de projectile pour ajouter une ligneq
 ligne_en_plus = 0
-# NE PAS OUBLIER TIR_UNIQUE
+
+# compteur tir = permet de compter le nombre de fois que tir_anim est lancer !
+# Au bout de 40 fois le projectile, arrive au bout de l'ecran et on sort de la boucle compteur_tir , elle se remet à 0 pour le prochain tir
+# tir unique permet de limiter le nombre de projectile sur l'écran à un seul
+#Lorsque nous tirons X projectile , une nouvelle ligne s'ajoute
 
 def tir(event):
     global projectile, tir_unique, ligne_en_plus
@@ -157,13 +167,15 @@ def tir(event):
         tir_unique = 0
         ligne_en_plus = ligne_en_plus + 1
         tir_anim()
-        if ligne_en_plus == 5:
+        if ligne_en_plus == 8:
              ajouter_uneligne()
              ligne_en_plus = 0
-
+ 
+# After , permet d'attendre 20 millisecondes avant de lancer rappeler la fonction tiranim()
+# can.move fait bouger le projectile de dx en horizontal et dy en vertical
 def tir_anim():
     global tir_unique,lateral_tir,horizon_tir,projectile,compteur_tir
-    if compteur_tir < 37 :
+    if compteur_tir < 40 :
         compteur_tir = compteur_tir + 1
         can.move(projectile,dx,dy)
         fenetre.after(20,tir_anim) 
@@ -181,7 +193,6 @@ def déplacement_projo():
             lateral_tir = lateral_tir - 20
             can.delete(projectile[0])
             can.move(projectile,0,-20)
-            projectile =[can.create_image(horizon_tir,lateral_tir, image=img_projectile)]
             fenetre.after(20,déplacement_projo)
     compteur = 0
     lateral_tir = 350
