@@ -147,26 +147,31 @@ lateral_tir = 350
 dx = 0
 dy = -10
 compteur_tir = 0
+ligne_en_plus = 0
 # NE PAS OUBLIER TIR_UNIQUE
 
 def tir(event):
-    global projectile, tir_unique
+    global projectile, tir_unique, ligne_en_plus
     if tir_unique == 1 :
         projectile =[can.create_image(horizon_tir,lateral_tir, image=img_projectile)]
         tir_unique = 0
-
+        ligne_en_plus = ligne_en_plus + 1
         tir_anim()
+        if ligne_en_plus == 5:
+             ajouter_uneligne()
+             ligne_en_plus = 0
 
 def tir_anim():
     global tir_unique,lateral_tir,horizon_tir,projectile,compteur_tir
-    if compteur_tir < 38 :
+    if compteur_tir < 37 :
         compteur_tir = compteur_tir + 1
         can.move(projectile,dx,dy)
         fenetre.after(20,tir_anim) 
     else:
         tir_unique=1
         compteur_tir=0
-   
+
+
 '''
 def déplacement_projo():
     global projectile,horizon_tir,lateral_tir,compteur,tir_unique
