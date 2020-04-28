@@ -143,19 +143,29 @@ def right(event):
 
 tir_unique = 1
 lateral_tir = 350
-compteur = 0
 
 dx = 0
 dy = -10
+compteur_tir = 0
 # NE PAS OUBLIER TIR_UNIQUE
-projectile =[can.create_image(horizon_tir,lateral_tir, image=img_projectile)]
-def tir():
-    global tir_unique,lateral_tir,horizon_tir,projectile
-    can.move(projectile,dx,dy)
-    fenetre.after(20,tir)
 
+def tir(event):
+    global projectile, tir_unique
+    if tir_unique == 1 :
+        projectile =[can.create_image(horizon_tir,lateral_tir, image=img_projectile)]
+        tir_unique = 0
 
+        tir_anim()
 
+def tir_anim():
+    global tir_unique,lateral_tir,horizon_tir,projectile,compteur_tir
+    if compteur_tir < 38 :
+        compteur_tir = compteur_tir + 1
+        can.move(projectile,dx,dy)
+        fenetre.after(20,tir_anim) 
+    else:
+        tir_unique=1
+        compteur_tir=0
    
 '''
 def déplacement_projo():
@@ -172,7 +182,7 @@ def déplacement_projo():
     lateral_tir = 350
 '''
 
-tir()
+
 #Touche fleche gauche pour aller à gauche
 fenetre.bind('<Left>', left)
 #Touche fleche droit pour aller à droit
