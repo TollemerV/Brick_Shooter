@@ -110,7 +110,7 @@ def boutique_vitesse_deplacement(vitesse_deplacement):
 #affiche_deplacement.append(can.create_text(vitesse_deplacement,font=('Fixedsys',8),text=str(vitesse_deplacement)+': Vitesse de Deplacement',fill='red'))
 
 def boutique_vitesse_defilement(vitesse_defilement):
-    if vitesse_deplacement <10 :
+    if vitesse_defilement <10 :
         vitesse_defilement=vitesse_defilement+5
 #affiche_defilement.append(can.create_text(font=('Fixedsys',8),text=str(vitesse_defilement)+': Vitesse de Defilement',fill='red'))
 
@@ -123,23 +123,30 @@ def boutique_vitesse_tir(vitesse_tir):
 ########################################################################
 ##################### FENETRE JEU ######################################
 ########################################################################
-
+position_actuelle = 320
 #fontion pour aller à gauche
 def left(event):
-    global limit,horizon_tir
+    global limit,horizon_tir,position_actuelle
     if limit > -280 :
      limit = limit - vitesse_deplacement
+     position_actuelle = position_actuelle - vitesse_deplacement
      can.move(bloc_tk,-vitesse_deplacement,0)
      horizon_tir = horizon_tir - vitesse_deplacement
 
 
 #fontion pour aller à droite 
 def right(event):
-    global limit,horizon_tir
+    global limit,horizon_tir,position_actuelle
     if limit < 280 :
         limit = limit + vitesse_deplacement
+        position_actuelle = position_actuelle + vitesse_deplacement
         can.move(bloc_tk,vitesse_deplacement,0)
         horizon_tir = horizon_tir + vitesse_deplacement
+
+
+########################################################################
+######################## TIR ##################################
+########################################################################
 
 #tir unique permet de tirer un projectile
 tir_unique = 1
@@ -152,14 +159,13 @@ dx = 0
 dy = -10
 #compteur du nombre d'animation tir
 compteur_tir = 0
-# compte le nombre de projectile pour ajouter une ligneq
+# compte le nombre de projectile pour ajouter une ligne
 ligne_en_plus = 0
 
 # compteur tir = permet de compter le nombre de fois que tir_anim est lancer !
 # Au bout de 40 fois le projectile, arrive au bout de l'ecran et on sort de la boucle compteur_tir , elle se remet à 0 pour le prochain tir
 # tir unique permet de limiter le nombre de projectile sur l'écran à un seul
 #Lorsque nous tirons X projectile , une nouvelle ligne s'ajoute
-
 def tir(event):
     global projectile, tir_unique, ligne_en_plus
     if tir_unique == 1 :
@@ -183,6 +189,47 @@ def tir_anim():
         tir_unique=1
         compteur_tir=0
 
+########################################################################
+##################### VITESSE + ######################################
+########################################################################
+gold = 10000
+prix_vitesse = 1000
+nombre_amélioration_vitesse = 0
+def vitesse_plus():
+    global gold,prix_vitesse,vitesse_deplacement,nombre_amélioration_vitesse,bloc_joueur,bloc_tk
+    #SI nous avons plus de gold ou autant que le prix de l'augmentation vitesse alors :
+    if gold >= prix_vitesse :
+        # La vitesse est augmenté
+        vitesse_deplacement=vitesse_deplacement+10
+        # Le prix est enlevé de nos gold
+        gold = gold - prix_vitesse 
+        # Le prix de le vitesse double pour le prochain achat
+        prix_vitesse=prix_vitesse*2
+        # On affiche dans la console notre nouveaux solde de gold et le nouveau rix de la vitesse
+        print("Gold : ",gold)
+        print ("Prix Vitesse + : ",prix_vitesse)
+        print("")
+        nombre_amélioration_vitesse = nombre_amélioration_vitesse + 1
+        if nombre_amélioration_vitesse == 3 :
+            bloc_joueur = PhotoImage(file="spaceship.png")
+            bloc_tk = can.create_image(position_actuelle,430, image=bloc_joueur)
+
+Bouton_Vitesse= Button(fenetre, text ='Vitesse +', command = vitesse_plus)
+#On ajoute l'affichage du bouton dans la fenêtre tk:
+Bouton_Vitesse.pack()
+
+#Touche fleche gauche pour aller à gauche
+fenetre.bind('<Left>', left)
+#Touche fleche droit pour aller à droit
+fenetre.bind('<Right>',right)
+
+fenetre.bind('<space>',tir)
+
+
+
+fenetre.mainloop()
+
+
 
 '''
 def déplacement_projo():
@@ -197,15 +244,3 @@ def déplacement_projo():
     compteur = 0
     lateral_tir = 350
 '''
-
-
-#Touche fleche gauche pour aller à gauche
-fenetre.bind('<Left>', left)
-#Touche fleche droit pour aller à droit
-fenetre.bind('<Right>',right)
-
-fenetre.bind('<space>',tir)
-
-
-
-fenetre.mainloop()
