@@ -3,6 +3,7 @@ from random import *
 from function import *
 import time
 import pickle
+import tkinter as tk
 
 
 fenetre=Tk()
@@ -143,7 +144,18 @@ def right(event):
         position_actuelle = position_actuelle + vitesse_deplacement
         can.move(bloc_tk,vitesse_deplacement,0)
         horizon_tir = horizon_tir + vitesse_deplacement
-
+        
+########################################################################
+######################## SCORE ##################################
+########################################################################
+Score = 0
+def incrémentation_score():  
+    points = infos['value']
+    points += 50
+    infos['value'] = points   
+    can.itemconfig(text, text=str(points)) # création du nouveau texte
+infos = {'value': Score, }
+text = can.create_text((50, 460), text=Score,font="Arial 24 italic", fill="white")
 
 ########################################################################
 ######################## TIR ##################################
@@ -169,6 +181,7 @@ limite_projectile = 40
 # Au bout de 40 fois le projectile, arrive au bout de l'ecran et on sort de la boucle compteur_tir , elle se remet à 0 pour le prochain tir
 # tir unique permet de limiter le nombre de projectile sur l'écran à un seul
 #Lorsque nous tirons X projectile , une nouvelle ligne s'ajoute
+
 def tir(event):
     global projectile, tir_unique, ligne_en_plus
     if tir_unique == 1 :
@@ -176,6 +189,8 @@ def tir(event):
         tir_unique = 0
         ligne_en_plus = ligne_en_plus + 1
         tir_anim()
+        #Incrémentation du Score
+        incrémentation_score()
         if ligne_en_plus == 8:
              ajouter_uneligne()
              ligne_en_plus = 0
@@ -191,6 +206,8 @@ def tir_anim():
     else:
         tir_unique=1
         compteur_tir=0
+
+
 
 ########################################################################
 ##################### BOUTIQUE ######################################
