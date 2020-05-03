@@ -53,7 +53,7 @@ def ennemi():
 # Ajouter une nouvelle ligne | On décale de 60 pixels vers la droite entre chaque bloc | On remet X à 60 quand on arrive au bout de la ligne ainsi que le compteur i
 def ajouter_uneligne():
     global i,yennemi,xennemi
-    while i<10 :
+    while i<20 :
         ennemi()
         i=i+1
     yennemi = yennemi + 60
@@ -90,6 +90,7 @@ def destruction_bloc ():
 limit = 0
 
 vitesse_deplacement = 15
+'''
 vitesse_defilement = 2
 vitesse_tir = 5
 
@@ -118,7 +119,7 @@ def boutique_vitesse_tir(vitesse_tir):
     if vitesse_tir <20 :
         vitesse_tir=vitesse_tir +5
 #affiche_tir.append(can.create_text(font=('Fixedsys',8),text=str(vitesse_tir)+': Vitesse de Tir',fill='red'))
-
+'''
 
 ########################################################################
 ##################### FENETRE JEU ######################################
@@ -161,6 +162,8 @@ dy = -10
 compteur_tir = 0
 # compte le nombre de projectile pour ajouter une ligne
 ligne_en_plus = 0
+# Limite du projectile en haut de l'ecran
+limite_projectile = 40
 
 # compteur tir = permet de compter le nombre de fois que tir_anim est lancer !
 # Au bout de 40 fois le projectile, arrive au bout de l'ecran et on sort de la boucle compteur_tir , elle se remet à 0 pour le prochain tir
@@ -181,7 +184,7 @@ def tir(event):
 # can.move fait bouger le projectile de dx en horizontal et dy en vertical
 def tir_anim():
     global tir_unique,lateral_tir,horizon_tir,projectile,compteur_tir
-    if compteur_tir < 40 :
+    if compteur_tir < limite_projectile :
         compteur_tir = compteur_tir + 1
         can.move(projectile,dx,dy)
         fenetre.after(20,tir_anim) 
@@ -190,11 +193,14 @@ def tir_anim():
         compteur_tir=0
 
 ########################################################################
-##################### VITESSE + ######################################
+##################### BOUTIQUE ######################################
 ########################################################################
 gold = 10000
 prix_vitesse = 1000
+prix_tir = 1000
+
 nombre_amélioration_vitesse = 0
+
 def vitesse_plus():
     global gold,prix_vitesse,vitesse_deplacement,nombre_amélioration_vitesse,bloc_joueur,bloc_tk
     #SI nous avons plus de gold ou autant que le prix de l'augmentation vitesse alors :
@@ -208,15 +214,42 @@ def vitesse_plus():
         # On affiche dans la console notre nouveaux solde de gold et le nouveau rix de la vitesse
         print("Gold : ",gold)
         print ("Prix Vitesse + : ",prix_vitesse)
+        print ("Vitesse augmenté ")
         print("")
         nombre_amélioration_vitesse = nombre_amélioration_vitesse + 1
-        if nombre_amélioration_vitesse == 3 :
-            bloc_joueur = PhotoImage(file="spaceship.png")
-            bloc_tk = can.create_image(position_actuelle,430, image=bloc_joueur)
-
+    else:
+        print(" PAS ASSEZ DE GOLD ! ")
+    if nombre_amélioration_vitesse == 3 :
+        bloc_joueur = PhotoImage(file="spaceship.png")
+        bloc_tk = can.create_image(position_actuelle,430, image=bloc_joueur)
+        
+def vitesse_tir():
+    global gold,prix_tir,dy,limite_projectile
+    #SI nous avons plus de gold ou autant que le prix de l'augmentation vitesse de tir alors :
+    if gold >= prix_tir :
+        # La vitesse de tir  est augmenté
+        dy= dy - 5
+        limite_projectile = limite_projectile - 5
+        # Le prix est enlevé de nos gold
+        gold = gold - prix_tir
+        # Le prix de le vitesse double pour le prochain achat
+        prix_tir=prix_tir*2
+        # On affiche dans la console notre nouveaux solde de gold et le nouveau rix de la vitesse
+        print("Gold : ",gold)
+        print ("Prix Vitesse + : ",prix_tir)
+        print ("Vitesse de tir augmenté ")
+        print("")
+    else:
+        print(" PAS ASSEZ DE GOLD ! ")
 Bouton_Vitesse= Button(fenetre, text ='Vitesse +', command = vitesse_plus)
 #On ajoute l'affichage du bouton dans la fenêtre tk:
-Bouton_Vitesse.pack()
+Bouton_Vitesse.pack(side = LEFT, padx = 10, pady = 5)
+
+Bouton_Tir = Button(fenetre, text ='Vitesse Tir +', command = vitesse_tir)
+Bouton_Tir.pack(side = LEFT, padx = 10, pady = 5)
+
+BoutonQuitter = Button(fenetre, text ='Quitter', command = fenetre.destroy)
+BoutonQuitter.pack(side = RIGHT, padx = 10, pady = 5)
 
 #Touche fleche gauche pour aller à gauche
 fenetre.bind('<Left>', left)
