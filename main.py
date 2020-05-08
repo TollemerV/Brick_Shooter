@@ -40,6 +40,10 @@ l=0
 horizon_tir = 320
 projectile = []
 
+########################################################################
+##################### ENNEMIS #########################################
+########################################################################
+'''
 #definition d'un bloc ennemi
 def ennemi():
     global xennemi,yennemi,listexennemi,listeyennemi,k
@@ -47,11 +51,12 @@ def ennemi():
     listexennemi=[k]
     listeyennemi=[k]
     listebloc.append(can.create_image(xennemi,yennemi,image=bloc_ennemi))
-    #On décale de 60px bloc entre chaque blo! 
+    #On décale de 60px bloc entre chaque bloc ! 
     xennemi = xennemi + 60
     k = k+1
 
 # Ajouter une nouvelle ligne | On décale de 60 pixels vers la droite entre chaque bloc | On remet X à 60 quand on arrive au bout de la ligne ainsi que le compteur i
+
 def ajouter_uneligne():
     global i,yennemi,xennemi
     while i<20 :
@@ -82,6 +87,37 @@ def destruction_bloc ():
             can.delete(listebloc[l])
         l = l+1
      
+'''
+compteur_ennemi = 0
+asteroide_unique = 1
+ax = 0
+ay = 2
+lateral_asteroide = 0
+horizon_asteroide = 380
+limite_asteroide = 250
+a=0
+def asteroide():
+    global asteroide, asteroide_unique,lateral_asteroide,horizon_asteroide
+    if asteroide_unique == 1 :
+        asteroide.append =[can.create_image(horizon_asteroide,lateral_asteroide, image=bloc_ennemi)]
+        asteroide_unique = 0
+        asteroide_anim()
+
+# can.move fait bouger l'asteroide projectile de ax en horizontal et ay en vertical
+def asteroide_anim():
+    global asteroide_unique,lateral_asteroide,horizon_asteroide,asteroide,compteur_ennemi
+    if compteur_ennemi < limite_asteroide :
+        compteur_ennemi = compteur_ennemi + 1
+        can.move(asteroide.append,ax,ay)
+        fenetre.after(10,asteroide_anim) 
+    else:
+        asteroide_unique=1
+        compteur_ennemi=0
+        horizon_asteroide = horizon_asteroide + 30
+        asteroide()
+
+asteroide()
+
 
 ########################################################################
 ##################### VARIABLE #########################################
@@ -91,36 +127,7 @@ def destruction_bloc ():
 limit = 0
 
 vitesse_deplacement = 15
-'''
-vitesse_defilement = 2
-vitesse_tir = 5
 
-affiche_deplacement = []
-affiche_defilement = []
-affiche_tir = []
-########################################################################
-##################### FENETRE BOUTIQUE #################################
-########################################################################
-
-'Button(fenetre,text="Deplacement +",font=("Fixedsys"),command=boutique_vitesse_deplacement).grid(row=2,column=2,sticky=N,padx=5)'
-'Button(fenetre,text="Defilement + ",font=("Fixedsys"),command=boutique_vitesse_defilement).grid(row=3,column=2,sticky=N,padx=5)'
-'Button(fenetre,text="Tir +",font=("Fixedsys"),command=boutique_vitesse_tir).grid(row=3,column=2,sticky=N,padx=5)'
-
-def boutique_vitesse_deplacement(vitesse_deplacement):
-    if vitesse_deplacement <40:
-        vitesse_deplacement=vitesse_deplacement+5
-#affiche_deplacement.append(can.create_text(vitesse_deplacement,font=('Fixedsys',8),text=str(vitesse_deplacement)+': Vitesse de Deplacement',fill='red'))
-
-def boutique_vitesse_defilement(vitesse_defilement):
-    if vitesse_defilement <10 :
-        vitesse_defilement=vitesse_defilement+5
-#affiche_defilement.append(can.create_text(font=('Fixedsys',8),text=str(vitesse_defilement)+': Vitesse de Defilement',fill='red'))
-
-def boutique_vitesse_tir(vitesse_tir):
-    if vitesse_tir <20 :
-        vitesse_tir=vitesse_tir +5
-#affiche_tir.append(can.create_text(font=('Fixedsys',8),text=str(vitesse_tir)+': Vitesse de Tir',fill='red'))
-'''
 
 ########################################################################
 ##################### FENETRE JEU ######################################
@@ -191,8 +198,9 @@ def tir(event):
         tir_anim()
         #Incrémentation du Score
         incrémentation_score()
+        # Si on a titrer 8 fois , une ligne d'ennemis s'ajoute
         if ligne_en_plus == 8:
-             ajouter_uneligne()
+             '''ajouter_uneligne()'''
              ligne_en_plus = 0
  
 # After , permet d'attendre 20 millisecondes avant de lancer rappeler la fonction tiranim()
