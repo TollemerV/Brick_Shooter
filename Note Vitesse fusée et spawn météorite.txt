@@ -1,0 +1,14 @@
+10 20 40 = vitesse de la fusée , 10 de base puis les 2 améliorations d'après
+
+320 = milieu 
+
+entre 80 et 540 
+
+
+Mettre un compteur dans tir anim et dans asteroide anim ; 
+qaund les 2 se croisent on detruit l'asteroide et le projectile
+Tout en prenant en compte lateral_tir et lateral_asteroide qui doivent etre egales
+
+Donc 
+If lateral_tir = lateral_asteroide and compteur1 = compteur2 :
+        destroy les 2

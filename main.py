@@ -4,7 +4,7 @@ from function import *
 import time
 import pickle
 import tkinter as tk
-
+import random
 
 fenetre=Tk()
 # Titre de la fenetre
@@ -93,8 +93,8 @@ asteroide_unique = 1
 ax = 0
 ay = 2
 lateral_asteroide = 0
-horizon_asteroide = 380
-limite_asteroide = 250
+horizon_asteroide = 320
+limite_asteroide = 255
 a=0
 def asteroide():
     global asteroide, asteroide_unique,lateral_asteroide,horizon_asteroide
@@ -102,7 +102,7 @@ def asteroide():
         asteroide.append =[can.create_image(horizon_asteroide,lateral_asteroide, image=bloc_ennemi)]
         asteroide_unique = 0
         asteroide_anim()
-
+   
 # can.move fait bouger l'asteroide projectile de ax en horizontal et ay en vertical
 def asteroide_anim():
     global asteroide_unique,lateral_asteroide,horizon_asteroide,asteroide,compteur_ennemi
@@ -113,8 +113,41 @@ def asteroide_anim():
     else:
         asteroide_unique=1
         compteur_ennemi=0
-        horizon_asteroide = horizon_asteroide + 30
-        asteroide()
+        Spawn = random.randint(1, 11) 
+        print("Spwan =  % s" % (Spawn))
+        if Spawn == 1 :
+            horizon_asteroide = 40
+            asteroide()
+        if Spawn == 2 :
+            horizon_asteroide = 80
+            asteroide()
+        if Spawn == 3 :
+            horizon_asteroide = 140
+            asteroide()
+        if Spawn == 4 :
+            horizon_asteroide = 200
+            asteroide()
+        if Spawn == 5 :
+            horizon_asteroide = 260
+            asteroide()
+        if Spawn == 6 :
+            horizon_asteroide = 320
+            asteroide()
+        if Spawn == 7 :
+            horizon_asteroide = 380
+            asteroide()
+        if Spawn == 8 :
+            horizon_asteroide = 440
+            asteroide()
+        if Spawn == 9 :
+            horizon_asteroide = 500
+            asteroide()
+        if Spawn == 10 :
+            horizon_asteroide = 560
+            asteroide()
+        if Spawn == 11 :
+            horizon_asteroide = 600
+            asteroide()
 
 asteroide()
 
@@ -266,6 +299,13 @@ def vitesse_tir():
         print("")
     else:
         print(" PAS ASSEZ DE GOLD ! ")
+
+
+
+if (horizon_asteroide == horizon_tir) and (lateral_tir==lateral_asteroide) : 
+    can.delete("asteroide")
+    print("test")
+      
 Bouton_Vitesse= Button(fenetre, text ='Vitesse +', command = vitesse_plus)
 #On ajoute l'affichage du bouton dans la fenêtre tk:
 Bouton_Vitesse.pack(side = LEFT, padx = 10, pady = 5)
