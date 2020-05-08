@@ -7,8 +7,23 @@ entre 80 et 540
 
 Mettre un compteur dans tir anim et dans asteroide anim ; 
 qaund les 2 se croisent on detruit l'asteroide et le projectile
-Tout en prenant en compte lateral_tir et lateral_asteroide qui doivent etre egales
+Tout en prenant en compte horizon_tir et horizon_asteroide qui doivent etre egales
 
 Donc 
-If lateral_tir = lateral_asteroide and compteur1 = compteur2 :
+If horizon_tir = hoziron_asteroide and compteur1 = compteur2 :
         destroy les 2
+
+
+Le projectile avance de 10 en 10 donc il faut calculer toutes les positions lateral qu'il aura jusqu'a arriver en haut
+
+380 370 360 350 340 .... 0  total 38 étapes
+compteur = 38
+A cahque étape = compteur - 1 ( on décompte à l'envers le compteur car l'animation va du bas vers le hauts)
+
+Pour cahques étapes calculer a quel itérationd l'astéroide sera égal à l'une des positions lateral de l'asteroide
+
+0 2 4 6 8 10 12 14 16 18 20.... 380
+
+A 10,20,30... 380 on note une étape ou compteur + 1 
+
+Si les 2 compteur sont égaux donc que les 2 canvas se croisent = destroy

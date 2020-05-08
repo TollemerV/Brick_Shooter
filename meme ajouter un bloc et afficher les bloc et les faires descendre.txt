@@ -1,6 +1,0 @@
-
-ajouter un nouveau bloc 
-afficher les blocs et/ou faire descendre les blocs
-
-on ajoute une nouvelle ligne en dessous et on à l'illusion que les 
-blocs bougent vers le bas
