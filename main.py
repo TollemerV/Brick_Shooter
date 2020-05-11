@@ -94,22 +94,30 @@ ax = 0
 ay = 2
 lateral_asteroide = 0
 horizon_asteroide = 320
-limite_asteroide = 255
+limite_asteroide = 180
 a=0
 def asteroide():
-    global asteroide, asteroide_unique,lateral_asteroide,horizon_asteroide
+    global asteroide, asteroide_unique,lateral_asteroide,horizon_asteroide,compteur_tour_ast
     if asteroide_unique == 1 :
         asteroide.append =[can.create_image(horizon_asteroide,lateral_asteroide, image=bloc_ennemi)]
         asteroide_unique = 0
+        compteur_tour_ast = 0
         asteroide_anim()
-   
+
+compteur_dizaine = 0
+compteur_tour_ast = 0
 # can.move fait bouger l'asteroide projectile de ax en horizontal et ay en vertical
 def asteroide_anim():
-    global asteroide_unique,lateral_asteroide,horizon_asteroide,asteroide,compteur_ennemi
+    global asteroide_unique,lateral_asteroide,horizon_asteroide,asteroide,compteur_ennemi,compteur_tour_ast,compteur_dizaine
     if compteur_ennemi < limite_asteroide :
         compteur_ennemi = compteur_ennemi + 1
         can.move(asteroide.append,ax,ay)
         fenetre.after(10,asteroide_anim) 
+        compteur_dizaine = compteur_dizaine + 1
+        if compteur_dizaine == 5 : 
+            compteur_tour_ast=compteur_tour_ast + 1
+            compteur_dizaine = 0
+         #Le compteur dizaine permet de mettre +1  tout les 5 avancement car l'asteroide avance de 2 en 2 donc il lui faut 5 coup pour avancer de 5 en 5 , il comte 1 pour chaque dzaine   
     else:
         asteroide_unique=1
         compteur_ennemi=0
@@ -151,7 +159,6 @@ def asteroide_anim():
 
 asteroide()
 
-
 ########################################################################
 ##################### VARIABLE #########################################
 ########################################################################
@@ -159,7 +166,7 @@ asteroide()
 #limite cotés de la carte
 limit = 0
 
-vitesse_deplacement = 15
+vitesse_deplacement = 10
 
 
 ########################################################################
@@ -221,7 +228,7 @@ limite_projectile = 40
 # Au bout de 40 fois le projectile, arrive au bout de l'ecran et on sort de la boucle compteur_tir , elle se remet à 0 pour le prochain tir
 # tir unique permet de limiter le nombre de projectile sur l'écran à un seul
 #Lorsque nous tirons X projectile , une nouvelle ligne s'ajoute
-
+compteur_avancement_tir = 38 
 def tir(event):
     global projectile, tir_unique, ligne_en_plus
     if tir_unique == 1 :
@@ -239,16 +246,50 @@ def tir(event):
 # After , permet d'attendre 20 millisecondes avant de lancer rappeler la fonction tiranim()
 # can.move fait bouger le projectile de dx en horizontal et dy en vertical
 def tir_anim():
-    global tir_unique,lateral_tir,horizon_tir,projectile,compteur_tir
+    global tir_unique,lateral_tir,horizon_tir,projectile,compteur_tir,compteur_avancement_tir,compteur_avancement_tir,compteur_tour_ast
     if compteur_tir < limite_projectile :
         compteur_tir = compteur_tir + 1
         can.move(projectile,dx,dy)
-        fenetre.after(20,tir_anim) 
+        compteur_avancement_tir = compteur_avancement_tir - 1
+        fenetre.after(20,tir_anim)
+        destroy()
     else:
         tir_unique=1
         compteur_tir=0
+        compteur_avancement_tir = 38 
 
+########################################################################
+##################### DESTRUCTION BLOC #########################################
+########################################################################
+'''
+# PARTIE ASTEROIDE
+ if compteur_dizaine == 5 : 
+            compteur_tour_ast=compteur_tour_ast + 1
+            compteur_dizaine = 0
+         #Le compteur dizaine permet de mettre +1  tout les 5 avancement car l'asteroide avance de 2 en 2 donc il lui faut 5 coup pour avancer de 5 en 5 , il comte 1 pour chaque dzaine   
+#/////////////////////////////////
+#PARTIE TIR
 
+compteur_avancement_tir = 38 
+#
+compteur_avancement_tir = compteur_avancement_tir - 1
+#/////////////////////////////////
+
+# PARTIE COMMUNE
+if compteur_tour_ast == compteur_avancement_tir:    #and horizon_asteroide == horizon_tir:
+    #destroy
+    print(" DESTROY ")
+'''
+'''
+if (horizon_asteroide == horizon_tir) and (lateral_tir==lateral_asteroide) : 
+    can.delete("asteroide")
+    print("test")
+      '''
+def destroy():
+        print(compteur_tour_ast)
+        print(compteur_avancement_tir)
+        if compteur_tour_ast == compteur_avancement_tir:    #and horizon_asteroide == horizon_tir:
+         print(" DESTROY ")
 
 ########################################################################
 ##################### BOUTIQUE ######################################
@@ -302,10 +343,6 @@ def vitesse_tir():
 
 
 
-if (horizon_asteroide == horizon_tir) and (lateral_tir==lateral_asteroide) : 
-    can.delete("asteroide")
-    print("test")
-      
 Bouton_Vitesse= Button(fenetre, text ='Vitesse +', command = vitesse_plus)
 #On ajoute l'affichage du bouton dans la fenêtre tk:
 Bouton_Vitesse.pack(side = LEFT, padx = 10, pady = 5)
