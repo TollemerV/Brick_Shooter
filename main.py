@@ -6,39 +6,61 @@ import pickle
 import tkinter as tk
 import random
 
+
 fenetre=Tk()
-# Titre de la fenetre
-fenetre.title('The Big Brick Shooter')
 can=Canvas(fenetre,width=640,height=480,bg='black')
-can.pack()
+fenetre.title('The Big Brick Shooter')
 
 # fond d'ecran
 fond = PhotoImage(file='fond.gif')
-#bloc_joueur
-bloc_joueur = PhotoImage(file="fusee.png")
-#bloc ennemi 
-bloc_ennemi = PhotoImage(file="ennemi.png")
-#Projectile (tir) 
-img_projectile = PhotoImage(file="projectile.png")
-
 # fond d'ecran
 can.create_image(320,240,image=fond)
-#bloc_joueur
-bloc_tk = can.create_image(320,430, image=bloc_joueur)
 
-#projectile = can.create_image(320,350, image=img_projectile)
 
-xennemi = 60
-yennemi = 40
-i=0
-j=0
-k=0
-nombre_tir=0
-xtir =0
-ytir=0
-l=0
-horizon_tir = 320
-projectile = []
+# Titre de la fenetre
+def new_game():
+    global bloc_joueur,bloc_ennemi,img_projectile,xennemi,yennemi,i,j,k,nombre_tir,xtir,ytir,l,horizon_tir,bloc_tk,projectile
+
+    can.pack()
+
+    #bloc_joueur
+    bloc_joueur = PhotoImage(file="fusee.png")
+    #bloc ennemi 
+    bloc_ennemi = PhotoImage(file="ennemi.png")
+    #Projectile (tir) 
+    img_projectile = PhotoImage(file="projectile.png")
+
+
+    #bloc_joueur
+    bloc_tk = can.create_image(320,430, image=bloc_joueur)
+
+    #projectile = can.create_image(320,350, image=img_projectile)
+      
+    xennemi = 60
+    yennemi = 40
+    i=0
+    j=0
+    k=0
+    nombre_tir=0
+    xtir =0
+    ytir=0
+    l=0
+    horizon_tir = 320
+    projectile = []
+    Bouton_Vitesse= Button(fenetre, text ='Vitesse +', command = vitesse_plus)
+    #On ajoute l'affichage du bouton dans la fenêtre tk:
+    Bouton_Vitesse.pack(side = LEFT, padx = 10, pady = 5)
+
+    Bouton_Tir = Button(fenetre, text ='Vitesse Tir +', command = vitesse_tir)
+    Bouton_Tir.pack(side = LEFT, padx = 10, pady = 5)
+
+    BoutonQuitter = Button(fenetre, text ='Quitter', command = fenetre.destroy)
+    BoutonQuitter.pack(side = RIGHT, padx = 10, pady = 5)
+
+    
+    asteroide()
+    
+
 
 ########################################################################
 ##################### ENNEMIS #########################################
@@ -157,7 +179,7 @@ def asteroide_anim():
             horizon_asteroide = 600
             asteroide()
 
-asteroide()
+
 
 ########################################################################
 ##################### VARIABLE #########################################
@@ -168,6 +190,17 @@ limit = 0
 
 vitesse_deplacement = 10
 
+########################################################################
+######################## SCORE ##################################
+########################################################################
+Score = 0
+def incrémentation_score():  
+    points = infos['value']
+    points += 50
+    infos['value'] = points   
+    can.itemconfig(text, text=str(points)) # création du nouveau texte
+infos = {'value': Score, }
+text = can.create_text((50, 460), text=Score,font="Arial 24 italic", fill="white")  
 
 ########################################################################
 ##################### FENETRE JEU ######################################
@@ -192,17 +225,7 @@ def right(event):
         can.move(bloc_tk,vitesse_deplacement,0)
         horizon_tir = horizon_tir + vitesse_deplacement
         
-########################################################################
-######################## SCORE ##################################
-########################################################################
-Score = 0
-def incrémentation_score():  
-    points = infos['value']
-    points += 50
-    infos['value'] = points   
-    can.itemconfig(text, text=str(points)) # création du nouveau texte
-infos = {'value': Score, }
-text = can.create_text((50, 460), text=Score,font="Arial 24 italic", fill="white")
+
 
 ########################################################################
 ######################## TIR ##################################
@@ -286,8 +309,8 @@ if (horizon_asteroide == horizon_tir) and (lateral_tir==lateral_asteroide) :
     print("test")
       '''
 def destroy():
-        print(compteur_tour_ast)
-        print(compteur_avancement_tir)
+        '''print(compteur_tour_ast)
+        print(compteur_avancement_tir)'''
         if compteur_tour_ast == compteur_avancement_tir:    #and horizon_asteroide == horizon_tir:
          print(" DESTROY ")
 
@@ -342,16 +365,115 @@ def vitesse_tir():
         print(" PAS ASSEZ DE GOLD ! ")
 
 
+########################################################################
+##################### MENU ######################################
+########################################################################
+class MenuOptions(Frame):
+        def __init__(self, master):
+                super().__init__()
 
-Bouton_Vitesse= Button(fenetre, text ='Vitesse +', command = vitesse_plus)
-#On ajoute l'affichage du bouton dans la fenêtre tk:
-Bouton_Vitesse.pack(side = LEFT, padx = 10, pady = 5)
+                # INITIALISATION DES VARIABLES
+                master = fenetre
+                # Créations des widgets
+                
+                self.message = Label(self, text="SPACE INVADER")
+                self.message.pack(side="top", fill=X)
 
-Bouton_Tir = Button(fenetre, text ='Vitesse Tir +', command = vitesse_tir)
-Bouton_Tir.pack(side = LEFT, padx = 10, pady = 5)
 
-BoutonQuitter = Button(fenetre, text ='Quitter', command = fenetre.destroy)
-BoutonQuitter.pack(side = RIGHT, padx = 10, pady = 5)
+                self.btn_jouer = Button(self, text="Jouer", command=self.call_play)
+                self.btn_jouer.pack()
+
+                self.btn_instruc = Button(self, text="Instruction", command=self.call_instruct)
+                self.btn_instruc.pack()
+
+                self.btn_equip = Button(self, text="Equipements", command=self.call_equipment)
+                self.btn_equip.pack()
+
+                self.btn_quitter = Button(self, text="Quitter",cursor="pirate", command=self.master.quit)
+                self.btn_quitter.pack()
+
+
+        # méthode d'appel de la page de jeu
+        
+        def call_play(self):
+                self.destroy()  # On détruit la frame en cour 
+                page_jeu = Jeu(self.master)  # et on créé la nouvelle
+                new_game()  # ON COMMENCE LA PARTIE
+                page_jeu.pack()
+
+        # méthode d'appel de la page d'instruction
+
+        def call_instruct(self):
+                self.destroy()
+                page_instruction = Instructions(self.master)
+                page_instruction.pack()
+
+        # méthode d'appel de la page d'équipement
+
+        def call_equipment(self):
+                self.destroy()
+                page_equipement = Equipements(self.master)
+                page_equipement.pack()
+    
+
+class Jeu(Frame):
+    def __init__(self,master):
+        super().__init__()
+
+        # INITIALISATION DES VARIABLES
+        master = fenetre
+        '''
+        btn_retour = Button(self, text="Retour", command=self.call_menu)
+        btn_retour.pack()'''
+
+    
+    # méthode d'appel de page menu
+
+    def call_menu(self):
+        self.destroy()
+        page_menu = MenuOptions(self.master)
+        page_menu.pack()
+
+ 
+
+class Equipements(Frame):
+    def __init__(self,master):
+        super().__init__()
+
+        # INITIALISATION DES VARIABLES
+        master = fenetre
+        # Créations des widgets
+        btn_retour = Button(self, text="Retour", command=self.call_menu)
+        btn_retour.pack()
+        
+    # méthode d'appel de page menu
+        
+    def call_menu(self):
+        self.destroy()
+        page_menu = MenuOptions(self.master)
+        page_menu.pack()
+
+       
+class Instructions(Frame):
+    def __init__(self,master):
+        super().__init__()
+
+        # INITIALISATION DES VARIABLES
+        master = fenetre
+        # Créations des widgets
+        btn_retour = Button(self, text="Retour", command=self.call_menu)
+        btn_retour.pack()
+
+    # méthode d'appel de page menu
+
+    def call_menu(self):
+        self.destroy()
+        page_menu = MenuOptions(self.master)
+        page_menu.pack()
+
+# Widget
+menu = MenuOptions(master=fenetre)
+menu.pack()
 
 #Touche fleche gauche pour aller à gauche
 fenetre.bind('<Left>', left)
@@ -359,9 +481,6 @@ fenetre.bind('<Left>', left)
 fenetre.bind('<Right>',right)
 
 fenetre.bind('<space>',tir)
-
-
-
 fenetre.mainloop()
 
 
