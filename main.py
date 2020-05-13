@@ -19,15 +19,16 @@ can.create_image(320,240,image=fond)
 nouveau_vaisseau=0
 # Titre de la fenetre
 def new_game():
-    global bloc_joueur,bloc_ennemi,img_projectile,xennemi,yennemi,i,j,k,nombre_tir,xtir,ytir,l,horizon_tir,bloc_tk,projectile
+    global bloc_joueur,bloc_ennemi,img_projectile,xennemi,yennemi,i,j,k,nombre_tir,xtir,ytir,l,horizon_tir,bloc_tk,projectile,bloc_coin,coin
 
     can.pack()
 
-
+    coin = PhotoImage(file="coin.png")
     #bloc ennemi 
     bloc_ennemi = PhotoImage(file="ennemi.png")
     #Projectile (tir) 
     img_projectile = PhotoImage(file="projectile.png")
+    
 
     if nouveau_vaisseau == 0 :
         #bloc_joueur
@@ -36,7 +37,7 @@ def new_game():
         bloc_tk = can.create_image(320,430, image=bloc_joueur)
 
     #projectile = can.create_image(320,350, image=img_projectile)
-      
+    bloc_coin = can.create_image(625,459, image=coin)
     xennemi = 60
     yennemi = 40
     i=0
@@ -323,8 +324,15 @@ def destroy():
 ########################################################################
 prix_vitesse = 1000
 prix_tir = 1000
-gold = 10000 # FAIRE RECUPERATION DE FICHIER 
 nombre_amélioration_vitesse = 0
+
+#gold = 10000 # FAIRE RECUPERATION DE FICHIER 
+mesgolds="gold.txt"
+Goldus=open(mesgolds,'r')
+Goldi=Goldus.read()
+Goldus.close()
+print(Goldi)
+gold = int(Goldi)
 
 def vitesse_plus():
     global gold,prix_vitesse,vitesse_deplacement,nombre_amélioration_vitesse,bloc_joueur,bloc_tk,nouveau_vaisseau
@@ -395,7 +403,7 @@ def décrementation_gold_vitesse_tir():
     can.itemconfig(text, text=str(gold)) # création du nouveau texte
 
 gold3 = {'value': gold, }
-text = can.create_text((600, 460), text=gold,font="Arial 16 italic", fill="white") 
+text = can.create_text((580, 460), text=gold,font="Arial 16 italic", fill="white") 
 
 ########################################################################
 ##################### MENU ######################################
