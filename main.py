@@ -315,8 +315,11 @@ if (horizon_asteroide == horizon_tir) and (lateral_tir==lateral_asteroide) :
 def destroy():
         '''print(compteur_tour_ast)
         print(compteur_avancement_tir)'''
+        global projectile,asteroide
         if compteur_tour_ast == compteur_avancement_tir:    #and horizon_asteroide == horizon_tir:
          print(" DESTROY ")
+         can.delete(projectile[0])
+         can.delete(asteroide.append)
 
 ########################################################################
 ##################### BOUTIQUE ######################################
