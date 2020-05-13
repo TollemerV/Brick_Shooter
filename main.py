@@ -197,12 +197,13 @@ vitesse_deplacement = 10
 ########################################################################
 Score = 0
 def incrémentation_score():  
-    points = infos['value']
+    points = infos['valeur']
     points += 50
-    infos['value'] = points   
-    can.itemconfig(text, text=str(points)) # création du nouveau texte
-infos = {'value': Score, }
-text = can.create_text((50, 460), text=Score,font="Arial 24 italic", fill="white")  
+    infos['valeur'] = points   
+    can.itemconfig(texte, text=str(points)) # création du nouveau texte
+infos = {'valeur': Score, }
+texte = can.create_text((50, 460), text=Score,font="Arial 24 italic", fill="white")  
+
 
 ########################################################################
 ##################### FENETRE JEU ######################################
@@ -263,6 +264,7 @@ def tir(event):
         tir_anim()
         #Incrémentation du Score
         incrémentation_score()
+        incrémentation_gold()
         # Si on a titrer 8 fois , une ligne d'ennemis s'ajoute
         if ligne_en_plus == 8:
              '''ajouter_uneligne()'''
@@ -319,10 +321,9 @@ def destroy():
 ########################################################################
 ##################### BOUTIQUE ######################################
 ########################################################################
-gold = 10000
 prix_vitesse = 1000
 prix_tir = 1000
-
+gold = 10000 # FAIRE RECUPERATION DE FICHIER 
 nombre_amélioration_vitesse = 0
 
 def vitesse_plus():
@@ -333,6 +334,7 @@ def vitesse_plus():
         vitesse_deplacement=vitesse_deplacement+10
         # Le prix est enlevé de nos gold
         gold = gold - prix_vitesse 
+        décrementation_gold_vitesse()
         # Le prix de le vitesse double pour le prochain achat
         prix_vitesse=prix_vitesse*2
         # On affiche dans la console notre nouveaux solde de gold et le nouveau rix de la vitesse
@@ -357,6 +359,7 @@ def vitesse_tir():
         limite_projectile = limite_projectile - 5
         # Le prix est enlevé de nos gold
         gold = gold - prix_tir
+        décrementation_gold_vitesse_tir()
         # Le prix de le vitesse double pour le prochain achat
         prix_tir=prix_tir*2
         # On affiche dans la console notre nouveaux solde de gold et le nouveau rix de la vitesse
@@ -366,15 +369,33 @@ def vitesse_tir():
         print("")
     else:
         print(" PAS ASSEZ DE GOLD ! ")
+#################################################
+##########   AFFICHAGE GOLD    ###################
+#################################################
+def incrémentation_gold():  
+    global gold
+    gold = gold3['value']
+    gold += 10
+    gold3['value'] = gold
+    can.itemconfig(text, text=str(gold)) # création du nouveau texte
+    
 
-'''
-def boutique(): 
-    Bouton_Vitesse= Button(fenetre, text ='Vitesse +', command = vitesse_plus)
-    #On ajoute l'affichage du bouton dans la fenêtre tk:
-    Bouton_Vitesse.pack( padx = 10, pady = 5)
+def décrementation_gold_vitesse():
+    global gold,prix_vitesse
+    gold = gold3['value']
+    gold = gold - prix_vitesse
+    gold3['value'] = gold
+    can.itemconfig(text, text=str(gold)) # création du nouveau texte
 
-    Bouton_Tir = Button(fenetre, text ='Vitesse Tir +', command = vitesse_tir)
-    Bouton_Tir.pack( padx = 10, pady = 5)'''
+def décrementation_gold_vitesse_tir():
+    global gold,prix_tir
+    gold = gold3['value']
+    gold = gold - prix_tir
+    gold3['value'] = gold
+    can.itemconfig(text, text=str(gold)) # création du nouveau texte
+
+gold3 = {'value': gold, }
+text = can.create_text((600, 460), text=gold,font="Arial 16 italic", fill="white") 
 
 ########################################################################
 ##################### MENU ######################################
