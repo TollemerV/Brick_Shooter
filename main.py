@@ -16,23 +16,24 @@ fond = PhotoImage(file='fond.gif')
 # fond d'ecran
 can.create_image(320,240,image=fond)
 
-
+nouveau_vaisseau=0
 # Titre de la fenetre
 def new_game():
     global bloc_joueur,bloc_ennemi,img_projectile,xennemi,yennemi,i,j,k,nombre_tir,xtir,ytir,l,horizon_tir,bloc_tk,projectile
 
     can.pack()
 
-    #bloc_joueur
-    bloc_joueur = PhotoImage(file="fusee.png")
+
     #bloc ennemi 
     bloc_ennemi = PhotoImage(file="ennemi.png")
     #Projectile (tir) 
     img_projectile = PhotoImage(file="projectile.png")
 
-
-    #bloc_joueur
-    bloc_tk = can.create_image(320,430, image=bloc_joueur)
+    if nouveau_vaisseau == 0 :
+        #bloc_joueur
+        bloc_joueur = PhotoImage(file="fusee.png")
+        #bloc_joueur
+        bloc_tk = can.create_image(320,430, image=bloc_joueur)
 
     #projectile = can.create_image(320,350, image=img_projectile)
       
@@ -47,6 +48,7 @@ def new_game():
     l=0
     horizon_tir = 320
     projectile = []
+    
     Bouton_Vitesse= Button(fenetre, text ='Vitesse +', command = vitesse_plus)
     #On ajoute l'affichage du bouton dans la fenêtre tk:
     Bouton_Vitesse.pack(side = LEFT, padx = 10, pady = 5)
@@ -324,7 +326,7 @@ prix_tir = 1000
 nombre_amélioration_vitesse = 0
 
 def vitesse_plus():
-    global gold,prix_vitesse,vitesse_deplacement,nombre_amélioration_vitesse,bloc_joueur,bloc_tk
+    global gold,prix_vitesse,vitesse_deplacement,nombre_amélioration_vitesse,bloc_joueur,bloc_tk,nouveau_vaisseau
     #SI nous avons plus de gold ou autant que le prix de l'augmentation vitesse alors :
     if gold >= prix_vitesse :
         # La vitesse est augmenté
@@ -344,6 +346,7 @@ def vitesse_plus():
     if nombre_amélioration_vitesse == 3 :
         bloc_joueur = PhotoImage(file="spaceship.png")
         bloc_tk = can.create_image(position_actuelle,430, image=bloc_joueur)
+        nouveau_vaisseau = 1
         
 def vitesse_tir():
     global gold,prix_tir,dy,limite_projectile
@@ -364,6 +367,14 @@ def vitesse_tir():
     else:
         print(" PAS ASSEZ DE GOLD ! ")
 
+'''
+def boutique(): 
+    Bouton_Vitesse= Button(fenetre, text ='Vitesse +', command = vitesse_plus)
+    #On ajoute l'affichage du bouton dans la fenêtre tk:
+    Bouton_Vitesse.pack( padx = 10, pady = 5)
+
+    Bouton_Tir = Button(fenetre, text ='Vitesse Tir +', command = vitesse_tir)
+    Bouton_Tir.pack( padx = 10, pady = 5)'''
 
 ########################################################################
 ##################### MENU ######################################
@@ -381,16 +392,16 @@ class MenuOptions(Frame):
 
 
                 self.btn_jouer = Button(self, text="Jouer", command=self.call_play)
-                self.btn_jouer.pack()
+                self.btn_jouer.pack(padx = 150, pady = 20)
 
                 self.btn_instruc = Button(self, text="Instruction", command=self.call_instruct)
-                self.btn_instruc.pack()
+                self.btn_instruc.pack(padx = 150, pady = 20)
 
                 self.btn_equip = Button(self, text="Equipements", command=self.call_equipment)
-                self.btn_equip.pack()
+                self.btn_equip.pack(padx = 150, pady = 20)
 
                 self.btn_quitter = Button(self, text="Quitter",cursor="pirate", command=self.master.quit)
-                self.btn_quitter.pack()
+                self.btn_quitter.pack(padx = 150, pady = 20)
 
 
         # méthode d'appel de la page de jeu
@@ -419,7 +430,6 @@ class MenuOptions(Frame):
 class Jeu(Frame):
     def __init__(self,master):
         super().__init__()
-
         # INITIALISATION DES VARIABLES
         master = fenetre
         '''
@@ -439,11 +449,16 @@ class Jeu(Frame):
 class Equipements(Frame):
     def __init__(self,master):
         super().__init__()
-
         # INITIALISATION DES VARIABLES
         master = fenetre
         # Créations des widgets
+        Bouton_Vitesse= Button(self, text ='Vitesse +', command = vitesse_plus)
+        #On ajoute l'affichage du bouton dans la fenêtre tk:
+        Bouton_Vitesse.pack( padx = 150, pady = 20)
+        Bouton_Tir = Button(self, text ='Vitesse Tir +', command = vitesse_tir)
+        Bouton_Tir.pack( padx = 150, pady = 20)
         btn_retour = Button(self, text="Retour", command=self.call_menu)
+
         btn_retour.pack()
         
     # méthode d'appel de page menu
@@ -457,7 +472,6 @@ class Equipements(Frame):
 class Instructions(Frame):
     def __init__(self,master):
         super().__init__()
-
         # INITIALISATION DES VARIABLES
         master = fenetre
         # Créations des widgets
@@ -470,6 +484,7 @@ class Instructions(Frame):
         self.destroy()
         page_menu = MenuOptions(self.master)
         page_menu.pack()
+
 
 # Widget
 menu = MenuOptions(master=fenetre)
