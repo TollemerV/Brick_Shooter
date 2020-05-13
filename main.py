@@ -57,12 +57,11 @@ def new_game():
     Bouton_Tir = Button(fenetre, text ='Vitesse Tir +', command = vitesse_tir)
     Bouton_Tir.pack(side = LEFT, padx = 10, pady = 5)
 
-    BoutonQuitter = Button(fenetre, text ='Quitter', command = fenetre.destroy)
+    BoutonQuitter = Button(fenetre, text ='Quitter', command = Quitter)
     BoutonQuitter.pack(side = RIGHT, padx = 10, pady = 5)
 
     
     asteroide()
-    
 
 
 ########################################################################
@@ -326,13 +325,7 @@ prix_vitesse = 1000
 prix_tir = 1000
 nombre_amélioration_vitesse = 0
 
-#gold = 10000 # FAIRE RECUPERATION DE FICHIER 
-mesgolds="gold.txt"
-Goldus=open(mesgolds,'r')
-Goldi=Goldus.read()
-Goldus.close()
-print(Goldi)
-gold = int(Goldi)
+
 
 def vitesse_plus():
     global gold,prix_vitesse,vitesse_deplacement,nombre_amélioration_vitesse,bloc_joueur,bloc_tk,nouveau_vaisseau
@@ -380,6 +373,15 @@ def vitesse_tir():
 #################################################
 ##########   AFFICHAGE GOLD    ###################
 #################################################
+
+#gold = 10000 # FAIRE RECUPERATION DE FICHIER 
+mesgolds="gold.txt"
+Goldus=open(mesgolds,'r')
+Goldi=Goldus.read()
+Goldus.close()
+print(Goldi)
+gold = int(Goldi)
+
 def incrémentation_gold():  
     global gold
     gold = gold3['value']
@@ -514,6 +516,15 @@ class Instructions(Frame):
         page_menu = MenuOptions(self.master)
         page_menu.pack()
 
+def Quitter() :
+    global goldsorti
+    fenetre.destroy()
+    mesgolds="gold.txt"
+    Goldus2=open(mesgolds,'w')
+    print(gold) 
+    goldsorti=str(gold)
+    Goldus2.write(goldsorti)
+    Goldus2.close()
 
 # Widget
 menu = MenuOptions(master=fenetre)
