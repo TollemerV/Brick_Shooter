@@ -118,7 +118,7 @@ ax = 0
 ay = 2
 lateral_asteroide = 0
 horizon_asteroide = 320
-limite_asteroide = 180
+limite_asteroide = 200
 a=0
 def asteroide():
     global asteroide, asteroide_unique,lateral_asteroide,horizon_asteroide,compteur_tour_ast
@@ -254,7 +254,7 @@ limite_projectile = 40
 # Au bout de 40 fois le projectile, arrive au bout de l'ecran et on sort de la boucle compteur_tir , elle se remet à 0 pour le prochain tir
 # tir unique permet de limiter le nombre de projectile sur l'écran à un seul
 #Lorsque nous tirons X projectile , une nouvelle ligne s'ajoute
-compteur_avancement_tir = 38 
+compteur_avancement_tir = 40 
 def tir(event):
     global projectile, tir_unique, ligne_en_plus
     if tir_unique == 1 :
@@ -283,7 +283,7 @@ def tir_anim():
     else:
         tir_unique=1
         compteur_tir=0
-        compteur_avancement_tir = 38 
+        compteur_avancement_tir = 40
 
 ########################################################################
 ##################### DESTRUCTION BLOC #########################################
@@ -314,18 +314,18 @@ if (horizon_asteroide == horizon_tir) and (lateral_tir==lateral_asteroide) :
       '''
 
 def destroy():
-        '''print(compteur_tour_ast)
-        print(compteur_avancement_tir)'''
-        hitbox_asteroide = horizon_asteroide + 25
-        hitbox_asteroide2 = horizon_asteroide - 25
-        global projectile,asteroide
-        if compteur_tour_ast == compteur_avancement_tir and hitbox_asteroide > horizon_tir and hitbox_asteroide2 < horizon_tir:    #and horizon_asteroide == horizon_tir:
-         print(" DESTROY ")
-         can.delete(projectile[0])
-         can.delete(asteroide.append)
-         ########################################
-         # AJOUTER L'INCREMENTATION SCORE ET GOLD ICI
-         ###############################################
+    global projectile,asteroide,compteur_avancement_tir
+    hitbox_destruction = compteur_tour_ast + 1
+    hitbox_destruction2 = compteur_tour_ast - 1
+    hitbox_asteroide = horizon_asteroide + 25 #(65)
+    hitbox_asteroide2 = horizon_asteroide - 25 #(15)
+    if ((compteur_avancement_tir <= hitbox_destruction) and (compteur_avancement_tir >= hitbox_destruction2) and (hitbox_asteroide > horizon_tir) and (hitbox_asteroide2 < horizon_tir)):   
+        print(" DESTROY ")
+        can.delete(projectile[0])
+        can.delete(asteroide.append)
+    ########################################
+    # AJOUTER L'INCREMENTATION SCORE ET GOLD ICI
+    ###############################################
 
 ########################################################################
 ##################### BOUTIQUE ######################################
