@@ -7,6 +7,7 @@ import tkinter as tk
 import random
 
 
+
 fenetre=Tk()
 can=Canvas(fenetre,width=640,height=480,bg='black')
 fenetre.title('The Big Brick Shooter')
@@ -130,23 +131,26 @@ def asteroide():
 
 compteur_dizaine = 0
 compteur_tour_ast = 0
+destruction = 0
 # can.move fait bouger l'asteroide projectile de ax en horizontal et ay en vertical
 def asteroide_anim():
-    global asteroide_unique,lateral_asteroide,horizon_asteroide,asteroide,compteur_ennemi,compteur_tour_ast,compteur_dizaine
+    global asteroide_unique,lateral_asteroide,horizon_asteroide,asteroide,compteur_ennemi,compteur_tour_ast,compteur_dizaine,destruction
     if compteur_ennemi < limite_asteroide :
         compteur_ennemi = compteur_ennemi + 1
         can.move(asteroide.append,ax,ay)
         fenetre.after(10,asteroide_anim) 
+        destroy()
         compteur_dizaine = compteur_dizaine + 1
         if compteur_dizaine == 5 : 
             compteur_tour_ast=compteur_tour_ast + 1
             compteur_dizaine = 0
-         #Le compteur dizaine permet de mettre +1  tout les 5 avancement car l'asteroide avance de 2 en 2 donc il lui faut 5 coup pour avancer de 5 en 5 , il comte 1 pour chaque dzaine   
+         #Le compteur dizaine permet de mettre +1  tout les 5 avancement car l'asteroide avance de 2 en 2 donc il lui faut 5 coup pour avancer de 10 en 10 , il compte 1 pour chaque dzaine   
     else:
         asteroide_unique=1
         compteur_ennemi=0
         Spawn = random.randint(1, 11) 
         print("Spwan =  % s" % (Spawn))
+        destruction = 0
         if Spawn == 1 :
             horizon_asteroide = 40
             asteroide()
@@ -265,7 +269,7 @@ def tir(event):
         #Incrémentation du Score
         incrémentation_score()
         incrémentation_gold()
-        # Si on a titrer 8 fois , une ligne d'ennemis s'ajoute
+        # Si on a tirer 8 fois , une ligne d'ennemis s'ajoute
         if ligne_en_plus == 8:
              '''ajouter_uneligne()'''
              ligne_en_plus = 0
@@ -279,7 +283,6 @@ def tir_anim():
         can.move(projectile,dx,dy)
         compteur_avancement_tir = compteur_avancement_tir - 1
         fenetre.after(20,tir_anim)
-        destroy()
     else:
         tir_unique=1
         compteur_tir=0
@@ -313,16 +316,24 @@ if (horizon_asteroide == horizon_tir) and (lateral_tir==lateral_asteroide) :
     print("test")
       '''
 
+
 def destroy():
-    global projectile,asteroide,compteur_avancement_tir
+    global projectile,asteroide,compteur_avancement_tir,destruction,limite_asteroide
     hitbox_destruction = compteur_tour_ast + 1
     hitbox_destruction2 = compteur_tour_ast - 1
     hitbox_asteroide = horizon_asteroide + 25 #(65)
     hitbox_asteroide2 = horizon_asteroide - 25 #(15)
+    destruction = destruction + 1
     if ((compteur_avancement_tir <= hitbox_destruction) and (compteur_avancement_tir >= hitbox_destruction2) and (hitbox_asteroide > horizon_tir) and (hitbox_asteroide2 < horizon_tir)):   
         print(" DESTROY ")
         can.delete(projectile[0])
         can.delete(asteroide.append)
+        destruction = 0
+    if destruction == 200 :
+        print('PERDU')
+        can.create_text(320,180,font=('Fixedsys',36),text="YOU LOSE ! ",fill='blue')
+        can.create_text(320,320,font=('Fixedsys',24),text="Victor & Luca",fill='red')
+        fenetre.after(4000, fenetre.destroy) 
     ########################################
     # AJOUTER L'INCREMENTATION SCORE ET GOLD ICI
     ###############################################
