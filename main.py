@@ -17,7 +17,64 @@ fond = PhotoImage(file='fond.gif')
 # fond d'ecran
 can.create_image(320,240,image=fond)
 
-nouveau_vaisseau=0
+########################################################################
+##################### VARIABLE #########################################
+########################################################################
+
+#limite cotés de la carte
+limit = 0
+##########vitesse deplacement############
+vitesse_deplacement = 10
+#Le nouveau vaisseau#
+
+nouveau_vaisseau = 0
+
+
+#######ennemis###############
+compteur_ennemi = 0
+asteroide_unique = 1
+ax = 0
+ay = 2
+lateral_asteroide = 0
+horizon_asteroide = 320
+limite_asteroide = 200
+a=0
+#########ennemis animation############
+compteur_dizaine = 0
+compteur_tour_ast = 0
+destruction = 0
+#########Score###########
+Score = 0
+##########Fenetre Jeu######
+position_actuelle = 320
+
+################### TIR #############
+
+#tir unique permet de tirer un projectile
+tir_unique = 1
+# placement verticale du départ des projectiles
+lateral_tir = 380
+
+#projectile déplacement horizontal (ne pas toucher)
+dx = 0
+# dy : vitesse du projectile , plus il tend vers moins l'infinie plus il est rapide
+dy = -10
+#compteur du nombre d'animation tir
+compteur_tir = 0
+# compte le nombre de projectile pour ajouter une ligne
+ligne_en_plus = 0
+# Limite du projectile en haut de l'ecran
+limite_projectile = 40
+
+############### BOUTIQUE #####################
+prix_vitesse = 1000
+prix_tir = 1000
+nombre_amélioration_vitesse = 0
+
+
+########################################################################
+##################### NOUVELLE PARTIE #########################################
+########################################################################
 # Titre de la fenetre
 def new_game():
     global bloc_joueur,bloc_ennemi,img_projectile,xennemi,yennemi,i,j,k,nombre_tir,xtir,ytir,l,horizon_tir,bloc_tk,projectile,bloc_coin,coin
@@ -68,59 +125,8 @@ def new_game():
 ########################################################################
 ##################### ENNEMIS #########################################
 ########################################################################
-'''
-#definition d'un bloc ennemi
-def ennemi():
-    global xennemi,yennemi,listexennemi,listeyennemi,k
-    listebloc=[k]
-    listexennemi=[k]
-    listeyennemi=[k]
-    listebloc.append(can.create_image(xennemi,yennemi,image=bloc_ennemi))
-    #On décale de 60px bloc entre chaque bloc ! 
-    xennemi = xennemi + 60
-    k = k+1
-
-# Ajouter une nouvelle ligne | On décale de 60 pixels vers la droite entre chaque bloc | On remet X à 60 quand on arrive au bout de la ligne ainsi que le compteur i
-
-def ajouter_uneligne():
-    global i,yennemi,xennemi
-    while i<20 :
-        ennemi()
-        i=i+1
-    yennemi = yennemi + 60
-    xennemi = 60
-    i=0
 
 
-ajouter_uneligne()
-ajouter_uneligne()
-
-if nombre_tir==18 :
-    ajouter_uneligne()
-    nombre_tir = 0
-
-
-
-#Fonction de destruction d'un bloc
-def destruction_bloc ():
-    global listexennemi,listeyennemi,l,xtir,ytir,listebloc
-    
-    while (l<len(listexennemi))and (l<len(listeyennemi)):
-        if (xtir==listexennemi[l]) and (ytir==listeyennemi[l]) :
-            listebloc = []
-            can.delete(projectile)
-            can.delete(listebloc[l])
-        l = l+1
-     
-'''
-compteur_ennemi = 0
-asteroide_unique = 1
-ax = 0
-ay = 2
-lateral_asteroide = 0
-horizon_asteroide = 320
-limite_asteroide = 200
-a=0
 def asteroide():
     global asteroide, asteroide_unique,lateral_asteroide,horizon_asteroide,compteur_tour_ast
     if asteroide_unique == 1 :
@@ -129,9 +135,7 @@ def asteroide():
         compteur_tour_ast = 0
         asteroide_anim()
 
-compteur_dizaine = 0
-compteur_tour_ast = 0
-destruction = 0
+
 # can.move fait bouger l'asteroide projectile de ax en horizontal et ay en vertical
 def asteroide_anim():
     global asteroide_unique,lateral_asteroide,horizon_asteroide,asteroide,compteur_ennemi,compteur_tour_ast,compteur_dizaine,destruction
@@ -188,18 +192,9 @@ def asteroide_anim():
 
 
 ########################################################################
-##################### VARIABLE #########################################
-########################################################################
-
-#limite cotés de la carte
-limit = 0
-
-vitesse_deplacement = 10
-
-########################################################################
 ######################## SCORE ##################################
 ########################################################################
-Score = 0
+
 def incrémentation_score():  
     points = infos['valeur']
     points += 50
@@ -212,7 +207,6 @@ texte = can.create_text((50, 460), text=Score,font="Arial 24 italic", fill="whit
 ########################################################################
 ##################### FENETRE JEU ######################################
 ########################################################################
-position_actuelle = 320
 #fontion pour aller à gauche
 def left(event):
     global limit,horizon_tir,position_actuelle
@@ -238,22 +232,6 @@ def right(event):
 ######################## TIR ##################################
 ########################################################################
 
-#tir unique permet de tirer un projectile
-tir_unique = 1
-# placement verticale du départ des projectiles
-lateral_tir = 380
-
-#projectile déplacement horizontal (ne pas toucher)
-dx = 0
-# dy : vitesse du projectile , plus il tend vers moins l'infinie plus il est rapide
-dy = -10
-#compteur du nombre d'animation tir
-compteur_tir = 0
-# compte le nombre de projectile pour ajouter une ligne
-ligne_en_plus = 0
-# Limite du projectile en haut de l'ecran
-limite_projectile = 40
-
 # compteur tir = permet de compter le nombre de fois que tir_anim est lancer !
 # Au bout de 40 fois le projectile, arrive au bout de l'ecran et on sort de la boucle compteur_tir , elle se remet à 0 pour le prochain tir
 # tir unique permet de limiter le nombre de projectile sur l'écran à un seul
@@ -269,10 +247,7 @@ def tir(event):
         #Incrémentation du Score
         incrémentation_score()
         incrémentation_gold()
-        # Si on a tirer 8 fois , une ligne d'ennemis s'ajoute
-        if ligne_en_plus == 8:
-             '''ajouter_uneligne()'''
-             ligne_en_plus = 0
+
  
 # After , permet d'attendre 20 millisecondes avant de lancer rappeler la fonction tiranim()
 # can.move fait bouger le projectile de dx en horizontal et dy en vertical
@@ -291,31 +266,6 @@ def tir_anim():
 ########################################################################
 ##################### DESTRUCTION BLOC #########################################
 ########################################################################
-'''
-# PARTIE ASTEROIDE
- if compteur_dizaine == 5 : 
-            compteur_tour_ast=compteur_tour_ast + 1
-            compteur_dizaine = 0
-         #Le compteur dizaine permet de mettre +1  tout les 5 avancement car l'asteroide avance de 2 en 2 donc il lui faut 5 coup pour avancer de 5 en 5 , il comte 1 pour chaque dzaine   
-#/////////////////////////////////
-#PARTIE TIR
-
-compteur_avancement_tir = 38 
-#
-compteur_avancement_tir = compteur_avancement_tir - 1
-#/////////////////////////////////
-
-# PARTIE COMMUNE
-if compteur_tour_ast == compteur_avancement_tir:    #and horizon_asteroide == horizon_tir:
-    #destroy
-    print(" DESTROY ")
-'''
-'''
-if (horizon_asteroide == horizon_tir) and (lateral_tir==lateral_asteroide) : 
-    can.delete("asteroide")
-    print("test")
-      '''
-
 
 def destroy():
     global projectile,asteroide,compteur_avancement_tir,destruction,limite_asteroide
@@ -341,11 +291,6 @@ def destroy():
 ########################################################################
 ##################### BOUTIQUE ######################################
 ########################################################################
-prix_vitesse = 1000
-prix_tir = 1000
-nombre_amélioration_vitesse = 0
-
-
 
 def vitesse_plus():
     global gold,prix_vitesse,vitesse_deplacement,nombre_amélioration_vitesse,bloc_joueur,bloc_tk,nouveau_vaisseau
@@ -483,11 +428,7 @@ class Jeu(Frame):
         super().__init__()
         # INITIALISATION DES VARIABLES
         master = fenetre
-        '''
-        btn_retour = Button(self, text="Retour", command=self.call_menu)
-        btn_retour.pack()'''
-
-    
+ 
     # méthode d'appel de page menu
 
     def call_menu(self):
@@ -558,18 +499,4 @@ fenetre.bind('<Right>',right)
 fenetre.bind('<space>',tir)
 fenetre.mainloop()
 
-
-
-'''
-def déplacement_projo():
-    global projectile,horizon_tir,lateral_tir,compteur,tir_unique
-    if len(projectile)==1:
-            #projectile = can.create_image(horizon_tir,lateral_tir, image=img_projectile)
-            compteur = compteur + 1
-            lateral_tir = lateral_tir - 20
-            can.delete(projectile[0])
-            can.move(projectile,0,-20)
-            fenetre.after(20,déplacement_projo)
-    compteur = 0
-    lateral_tir = 350
-'''
+#574
