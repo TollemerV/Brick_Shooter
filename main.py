@@ -332,7 +332,7 @@ def destroy():
     if destruction == 200 :
         print('PERDU')
         can.create_text(320,180,font=('Fixedsys',36),text="YOU LOSE ! ",fill='blue')
-        can.create_text(320,320,font=('Fixedsys',24),text="Victor & Luca",fill='red')
+        can.create_text(320,320,font=('Fixedsys',24),text="Victor & Luca ",fill='red')
         fenetre.after(4000, fenetre.destroy) 
     ########################################
     # AJOUTER L'INCREMENTATION SCORE ET GOLD ICI
