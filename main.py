@@ -300,7 +300,7 @@ def destroy():
         # On detruit le projectile actuelle
         can.delete(projectile[0])
         # On detruit le dernier asteroide ajouté à la liste : celui sur l'écran actuel
-00        can.delete(asteroide.append)
+        can.delete(asteroide.append)
         destruction = 0
     if destruction == 200 :
         # Si un asteroide arrive en bas de l'ecran , on affiche un texte de fin de partie et l'ecran se detruit
