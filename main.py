@@ -64,7 +64,8 @@ compteur_tir = 0
 ligne_en_plus = 0
 # Limite du projectile en haut de l'ecran
 limite_projectile = 40
-
+# nouvelle valeur pour la destruction de itr : si la vitesse de tir augmente alors le calcul de destruction change aussi
+nouvelle_vitesse_destruction = 1
 ############### BOUTIQUE #####################
 prix_vitesse = 1000
 prix_tir = 1000
@@ -124,13 +125,17 @@ def new_game():
 ##################### ENNEMIS #########################################
 ########################################################################
 
-
 def asteroide():
     global asteroide, asteroide_unique,lateral_asteroide,horizon_asteroide,compteur_tour_ast
+    # Asteroide unique permet qu'il y est un asteroide seulement sur l'ecrzn en meme temps
     if asteroide_unique == 1 :
+        # Nous ajoutons un nouveau bloc à la fin de la liste
         asteroide.append =[can.create_image(horizon_asteroide,lateral_asteroide, image=bloc_ennemi)]
+       # Asteroide unique est remis à 0 pour dire qu'il y a deja un asteroide sur l'ecran
         asteroide_unique = 0
+        # Variable qui permet de compter l'avancement de l'asteroide en meme temps que l'avancement de notre tir
         compteur_tour_ast = 0
+        # Lancement de l'animation de l'asteroide
         asteroide_anim()
 
 
@@ -139,7 +144,9 @@ def asteroide_anim():
     global asteroide_unique,lateral_asteroide,horizon_asteroide,asteroide,compteur_ennemi,compteur_tour_ast,compteur_dizaine,destruction
     if compteur_ennemi < limite_asteroide :
         compteur_ennemi = compteur_ennemi + 1
+        # L'asteroide bouge de de la vitesse ay (- 10 de base)
         can.move(asteroide.append,ax,ay)
+        # On 10 millisecondes l'animation se relance, et l'asteroide precedent se detruit pour avec un effet d'animation
         fenetre.after(10,asteroide_anim) 
         destroy()
         compteur_dizaine = compteur_dizaine + 1
@@ -148,6 +155,8 @@ def asteroide_anim():
             compteur_dizaine = 0
          #Le compteur dizaine permet de mettre +1  tout les 5 avancement car l'asteroide avance de 2 en 2 donc il lui faut 5 coup pour avancer de 10 en 10 , il compte 1 pour chaque dzaine   
     else:
+        # RANDOM DE LA POSITION HORIZONTAL DE L'ASTEROIDE
+        # EN FONCTION DU NOMBRE RANDOM, UNE POSITION SERA ATTRIBUER
         asteroide_unique=1
         compteur_ennemi=0
         Spawn = random.randint(1, 11) 
@@ -193,6 +202,7 @@ def asteroide_anim():
 ######################## SCORE ##################################
 ########################################################################
 
+# Le socre augmente de 50 en 50 , pour cela on créer un dictionnaire
 def incrémentation_score():  
     points = infos['valeur']
     points += 50
@@ -205,12 +215,18 @@ texte = can.create_text((50, 460), text=Score,font="Arial 24 italic", fill="whit
 ########################################################################
 ##################### FENETRE JEU ######################################
 ########################################################################
+
+# Des limites sont fixés pour que la fusée ne sorte pas des limites de l'écran
+# La position actuelle permet de connaitre la position actuelle de la fusée pour l'amélioration de la fusée (spaceship.png)
+
+
 #fontion pour aller à gauche
 def left(event):
     global limit,horizon_tir,position_actuelle
     if limit > -280 :
      limit = limit - vitesse_deplacement
      position_actuelle = position_actuelle - vitesse_deplacement
+     # On deplace le canevas fusée de - la vitesse de déplacement
      can.move(bloc_tk,-vitesse_deplacement,0)
      horizon_tir = horizon_tir - vitesse_deplacement
 
@@ -221,6 +237,7 @@ def right(event):
     if limit < 280 :
         limit = limit + vitesse_deplacement
         position_actuelle = position_actuelle + vitesse_deplacement
+        # On deplace le canevas fusée de  la vitesse de déplacement
         can.move(bloc_tk,vitesse_deplacement,0)
         horizon_tir = horizon_tir + vitesse_deplacement
         
@@ -247,7 +264,7 @@ def tir(event):
         incrémentation_gold()
 
  
-nouvelle_vitesse_destruction = 1
+
 # After , permet d'attendre 20 millisecondes avant de lancer rappeler la fonction tiranim()
 # can.move fait bouger le projectile de dx en horizontal et dy en vertical
 def tir_anim():
@@ -266,26 +283,33 @@ def tir_anim():
 ##################### DESTRUCTION BLOC #########################################
 ########################################################################
 
+# La fonction est appeler a chaque fois que l'asteroide avance 
+# Cela permet de savoir a chaque fois si la position du bloc est egal à la position du projectile
+
 def destroy():
     global projectile,asteroide,compteur_avancement_tir,destruction,limite_asteroide
+    # On créer une Hitbox pour que nous puissions viser entirement l'asteroide et pas uniquement le centre de celui ci
     hitbox_destruction = compteur_tour_ast + 1
     hitbox_destruction2 = compteur_tour_ast - 1
     hitbox_asteroide = horizon_asteroide + 25 #(65)
     hitbox_asteroide2 = horizon_asteroide - 25 #(15)
     destruction = destruction + 1
+    # On test savoir si le projectile rentre dans la hitbox de l'asteroide actuelle
     if ((compteur_avancement_tir <= hitbox_destruction) and (compteur_avancement_tir >= hitbox_destruction2) and (hitbox_asteroide > horizon_tir) and (hitbox_asteroide2 < horizon_tir)):   
         print(" DESTROY ")
+        # On detruit le projectile actuelle
         can.delete(projectile[0])
-        can.delete(asteroide.append)
+        # On detruit le dernier asteroide ajouté à la liste : celui sur l'écran actuel
+00        can.delete(asteroide.append)
         destruction = 0
     if destruction == 200 :
+        # Si un asteroide arrive en bas de l'ecran , on affiche un texte de fin de partie et l'ecran se detruit
+        # Quand l'ecran se detruit les golds ne sont pas sauvegarder
         print('PERDU')
         can.create_text(320,180,font=('Fixedsys',36),text="YOU LOSE ! ",fill='blue')
         can.create_text(320,320,font=('Fixedsys',24),text="Victor & Luca ",fill='red')
         fenetre.after(4000, fenetre.destroy) 
-    ########################################
-    # AJOUTER L'INCREMENTATION SCORE ET GOLD ICI
-    ###############################################
+
 
 ########################################################################
 ##################### BOUTIQUE ######################################
@@ -332,6 +356,7 @@ def vitesse_tir():
         print ("Prix Vitesse + : ",prix_tir)
         print ("Vitesse de tir augmenté ")
         print("")
+        #Nouvelle vitesse destruction permet de changer la valeur de calcul pour la destruction de bloc, le projectile va defois plus vite donc le calcul doit aller 2 fois plus vite aussi
         nouvelle_vitesse_destruction = nouvelle_vitesse_destruction * 2
     else:
         print(" PAS ASSEZ DE GOLD ! ")
