@@ -377,13 +377,15 @@ text = can.create_text((580, 460), text=gold,font="Arial 16 italic", fill="white
 class MenuOptions(Frame):
         def __init__(self, master):
                 super().__init__()
-
+                global gold3,text,gold
                 # INITIALISATION DES VARIABLES
                 master = fenetre
                 # Créations des widgets
                 
                 self.message = Label(self, text="SPACE INVADER")
                 self.message.pack(side="top", fill=X)
+                self.message = Label(self, text=gold)
+                self.message.pack(side="bottom", fill=X)
 
 
                 self.btn_jouer = Button(self, text="Jouer", command=self.call_play)
@@ -397,7 +399,7 @@ class MenuOptions(Frame):
 
                 self.btn_quitter = Button(self, text="Quitter",cursor="pirate", command=self.master.quit)
                 self.btn_quitter.pack(padx = 150, pady = 20)
-
+      
 
         # méthode d'appel de la page de jeu
         
@@ -448,6 +450,8 @@ class Equipements(Frame):
         Bouton_Vitesse.pack( padx = 150, pady = 20)
         Bouton_Tir = Button(self, text ='Vitesse Tir +', command = vitesse_tir)
         Bouton_Tir.pack( padx = 150, pady = 20)
+        self.message = Label(self, text=gold)
+        self.message.pack(side="bottom", fill=X)
         btn_retour = Button(self, text="Retour", command=self.call_menu)
 
         btn_retour.pack()
