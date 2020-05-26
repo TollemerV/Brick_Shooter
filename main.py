@@ -86,7 +86,6 @@ def new_game():
     #Projectile (tir) 
     img_projectile = PhotoImage(file="projectile.png")
     
-
     if nouveau_vaisseau == 0 :
         #bloc_joueur
         bloc_joueur = PhotoImage(file="fusee.png")
@@ -248,14 +247,15 @@ def tir(event):
         incrémentation_gold()
 
  
+nouvelle_vitesse_destruction = 1
 # After , permet d'attendre 20 millisecondes avant de lancer rappeler la fonction tiranim()
 # can.move fait bouger le projectile de dx en horizontal et dy en vertical
 def tir_anim():
-    global tir_unique,lateral_tir,horizon_tir,projectile,compteur_tir,compteur_avancement_tir,compteur_avancement_tir,compteur_tour_ast
+    global tir_unique,lateral_tir,horizon_tir,projectile,compteur_tir,compteur_avancement_tir,compteur_avancement_tir,compteur_tour_ast,nouvelle_vitesse_destruction
     if compteur_tir < limite_projectile :
         compteur_tir = compteur_tir + 1
         can.move(projectile,dx,dy)
-        compteur_avancement_tir = compteur_avancement_tir - 1
+        compteur_avancement_tir = compteur_avancement_tir - nouvelle_vitesse_destruction
         fenetre.after(20,tir_anim)
     else:
         tir_unique=1
@@ -316,11 +316,11 @@ def vitesse_plus():
         nouveau_vaisseau = 1
         
 def vitesse_tir():
-    global gold,prix_tir,dy,limite_projectile
+    global gold,prix_tir,dy,limite_projectile,nouvelle_vitesse_destruction
     #SI nous avons plus de gold ou autant que le prix de l'augmentation vitesse de tir alors :
     if gold >= prix_tir :
-        # La vitesse de tir  est augmenté
-        dy= dy - 5
+        # La vitesse de tir  est augmenté (doublé)
+        dy= dy *2
         limite_projectile = limite_projectile - 5
         # Le prix est enlevé de nos gold
         gold = gold - prix_tir
@@ -332,6 +332,7 @@ def vitesse_tir():
         print ("Prix Vitesse + : ",prix_tir)
         print ("Vitesse de tir augmenté ")
         print("")
+        nouvelle_vitesse_destruction = nouvelle_vitesse_destruction * 2
     else:
         print(" PAS ASSEZ DE GOLD ! ")
 #################################################
